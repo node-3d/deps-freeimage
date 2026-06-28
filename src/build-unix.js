@@ -1,11 +1,11 @@
-'use strict';
+import { exec as execCb } from 'node:child_process';
+import { promisify } from 'node:util';
 
-const util = require('node:util');
-const exec = util.promisify(require('node:child_process').exec);
+const exec = promisify(execCb);
 
 const {
 	getPlatform,
-} = require('addon-tools-raub');
+} = await import('@node-3d/addon-tools');
 
 
 const platform = getPlatform();
@@ -17,16 +17,14 @@ const fail = (error) => {
 };
 
 
-(async () => {
-	try {
-		console.log('FreeImage Build Started');
-		const { stderr } = await exec(`sh src/${platform}.sh`);
-		if (stderr) {
-			console.error(stderr);
-		}
-		console.log('FreeImage Build Finished');
-		console.log('-------------------');
-	} catch (error) {
-		fail(error);
+try {
+	console.log('FreeImage Build Started');
+	const { stderr } = await exec(`sh src/${platform}.sh`);
+	if (stderr) {
+		console.error(stderr);
 	}
-})();
+	console.log('FreeImage Build Finished');
+	console.log('-------------------');
+} catch (error) {
+	fail(error);
+}

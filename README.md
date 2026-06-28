@@ -2,12 +2,12 @@
 
 This is a part of [Node3D](https://github.com/node-3d) project.
 
-[![NPM](https://badge.fury.io/js/deps-freeimage-raub.svg)](https://badge.fury.io/js/deps-freeimage-raub)
-[![ESLint](https://github.com/node-3d/deps-freeimage-raub/actions/workflows/eslint.yml/badge.svg)](https://github.com/node-3d/deps-freeimage-raub/actions/workflows/eslint.yml)
-[![Test](https://github.com/node-3d/deps-freeimage-raub/actions/workflows/test.yml/badge.svg)](https://github.com/node-3d/deps-freeimage-raub/actions/workflows/test.yml)
+[![NPM](https://badge.fury.io/js/%40node-3d%2Fdeps-freeimage.svg)](https://badge.fury.io/js/@node-3d/deps-freeimage)
+[![Lint](https://github.com/node-3d/deps-freeimage/actions/workflows/lint.yml/badge.svg)](https://github.com/node-3d/deps-freeimage/actions/workflows/lint.yml)
+[![Test](https://github.com/node-3d/deps-freeimage/actions/workflows/test.yml/badge.svg)](https://github.com/node-3d/deps-freeimage/actions/workflows/test.yml)
 
 ```console
-npm i -s deps-freeimage-raub
+npm install @node-3d/deps-freeimage
 ```
 
 This dependency package is distributing **FreeImage 3.18**
@@ -19,21 +19,17 @@ binaries through **NPM** for **Node.js** addons.
 
 ### JS Interface
 
-See in [image-raub](https://github.com/node-3d/image-raub/blob/master/core.js) Node.js addon.
+See in [@node-3d/image](https://github.com/node-3d/image/blob/master/ts/index.ts) Node.js addon.
 
 
 ### binding.gyp
 
-See in [image-raub](https://github.com/node-3d/image-raub/tree/master/src/binding.gyp) Node.js addon.
+See in [@node-3d/image](https://github.com/node-3d/image/tree/master/src/binding.gyp) Node.js addon.
 
 
 ### addon.cpp
 
-See in [image-raub](https://github.com/node-3d/image-raub/blob/master/src/cpp/image.hpp) Node.js addon.
-
-
-
-### addon.cpp
+See in [@node-3d/image](https://github.com/node-3d/image/blob/master/src/cpp/image.hpp) Node.js addon.
 
 ```cpp
 #include <FreeImage.h>
@@ -54,4 +50,4 @@ which also can be found on
 The rest of this package is MIT licensed.
 
 Windows, Linux, and OSX binaries are built with
-[GitHub Actions](https://github.com/node-3d/deps-freeimage-raub/actions).
+[GitHub Actions](https://github.com/node-3d/deps-freeimage/actions).
