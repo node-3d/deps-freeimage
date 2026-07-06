@@ -10,26 +10,26 @@ This is a part of [Node3D](https://github.com/node-3d) project.
 npm install @node-3d/deps-freeimage
 ```
 
-This dependency package is distributing **FreeImage 3.18**
-binaries through **NPM** for **Node.js** addons.
+This dependency package distributes **FreeImage 3.18**
+binaries through **npm** for **Node.js** addons.
 
-* Platforms (x64): Windows x64, Linux x64, Linux Aarch64, MacOS x64, MacOS ARM.
+* Platforms: Windows x64, Linux x64, Linux ARM64, macOS x64, macOS ARM64.
 * Library: FreeImage.
 
 
 ### JS Interface
 
-See in [@node-3d/image](https://github.com/node-3d/image/blob/master/ts/index.ts) Node.js addon.
+See the [@node-3d/image public entrypoint](https://github.com/node-3d/image/blob/master/ts/index.ts).
 
 
 ### binding.gyp
 
-See in [@node-3d/image](https://github.com/node-3d/image/tree/master/src/binding.gyp) Node.js addon.
+See the [@node-3d/image binding.gyp](https://github.com/node-3d/image/tree/master/src/binding.gyp).
 
 
 ### addon.cpp
 
-See in [@node-3d/image](https://github.com/node-3d/image/blob/master/src/cpp/image.hpp) Node.js addon.
+See the [@node-3d/image native source](https://github.com/node-3d/image/blob/master/src/cpp/image.hpp).
 
 ```cpp
 #include <FreeImage.h>
@@ -44,10 +44,10 @@ This software uses the [FreeImage open source image library](http://freeimage.so
 FreeImage is legally used under the FIPL (FreeImage Public License) version.
 It is explicitly stated that FreeImage can be used commercially under FIPL.
 
-FreeImage licensing information (a COPY) is given in a [separate file](/FREEIMAGE_FIPL),
+FreeImage licensing information (a copy) is given in a [separate file](FREEIMAGE_FIPL),
 which also can be found on
 [FreeImage's official web-site](http://freeimage.sourceforge.net/license.html).
 The rest of this package is MIT licensed.
 
-Windows, Linux, and OSX binaries are built with
+Windows, Linux, and macOS binaries are built with
 [GitHub Actions](https://github.com/node-3d/deps-freeimage/actions).
