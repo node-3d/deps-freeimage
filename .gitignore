@@ -8,3 +8,4 @@ bin-*/
 *.log
 src/build/
 src/FreeImage/
+*.tgz
