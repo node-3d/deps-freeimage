@@ -1,13 +1,14 @@
 (
 	cd src/FreeImage
 	
-	export DYLIB_INSTALL_NAME_BASE=@rpath
+	export SDKROOT="$(xcrun --show-sdk-path)"
+	export MACOSX_DEPLOYMENT_TARGET=13.5
 	make -f Makefile.osx \
-		CPP_X86_64='g++ -w' \
-		CC_X86_64='gcc -w' \
-		COMPILERFLAGS_X86_64='-arch x86_64 -D__ANSI__ -DDISABLE_PERF_MEASUREMENT' \
-		LIBRARIES_X86_64='-flat_namespace -install_name "@rpath/freeimage.dylib" -Wl,-syslibroot /Applications/Xcode_14.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk' \
-		INCLUDE_X86_64='-isysroot /Applications/Xcode_14.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk' \
+		CPP_X86_64='clang++ -w' \
+		CC_X86_64='clang -w' \
+		COMPILERFLAGS_X86_64='-arch x86_64 -mmacosx-version-min=13.5 -D__ANSI__ -DDISABLE_PERF_MEASUREMENT' \
+		LIBRARIES_X86_64="-mmacosx-version-min=13.5 -flat_namespace -install_name @rpath/freeimage.dylib -Wl,-syslibroot ${SDKROOT}" \
+		INCLUDE_X86_64="-isysroot ${SDKROOT}" \
 		libfreeimage-3.18.0.dylib-x86_64 \
 		>/dev/null
 	

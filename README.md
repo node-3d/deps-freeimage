@@ -15,7 +15,7 @@ npm install @node-3d/deps-freeimage
 This dependency package distributes **FreeImage 3.18**
 binaries and headers through **npm** for **Node.js** addons.
 
-* Platforms: Windows x64, Linux x64/ARM64, macOS x64/ARM64.
+* Platforms: Windows x64/ARM64, Linux x64/ARM64, macOS x64/ARM64.
 * Library: FreeImage.
 
 

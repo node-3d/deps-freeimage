@@ -7,7 +7,7 @@ include Makefile.srcs
 # Find SDK path via xcode-select, backwards compatible with Xcode vers < 4.5
 MACOSX_SYSROOT = $(shell xcrun --show-sdk-path)
 # Specify deployement target here
-MACOSX_DEPLOYMENT_TARGET = 10.11
+MACOSX_DEPLOYMENT_TARGET = 13.5
 
 # General configuration variables:
 CC_I386 = $(shell xcrun -find clang)
