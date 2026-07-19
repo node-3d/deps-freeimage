@@ -1,8 +1,9 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { patchFreeImageSources } from './source-patches.js';
+
 const projectRoot = 'src/FreeImage';
-const openExrAttributePath = join(projectRoot, 'Source/OpenEXR/IlmImf/ImfAttribute.cpp');
 
 const replaceAll = (text, replacements) => {
 	let result = text;
@@ -12,15 +13,27 @@ const replaceAll = (text, replacements) => {
 	return result;
 };
 
+const hasArm64Block = (text, tagName, config) => {
+	const condition = `'\\$\\(Configuration\\)\\|\\$\\(Platform\\)'=='${config}\\|ARM64'`;
+	const blockPattern = new RegExp(`<${tagName}\\b[^>]*Condition="${condition}"`, 'u');
+
+	return blockPattern.test(text);
+};
+
 const cloneBlocks = (text, tagName) => {
 	const blockPattern = new RegExp(
 		`(<${tagName}[^>]*Condition="'\\$\\(Configuration\\)\\|\\$\\(Platform\\)'=='(Debug|Release)\\|x64'"[^>]*>[\\s\\S]*?<\\/${tagName}>)`,
 		'gu',
 	);
 
-	return text.replace(blockPattern, (block) => {
+	return text.replace(blockPattern, (block, _match, config) => {
+		if (hasArm64Block(text, tagName, config)) {
+			return block;
+		}
+
 		const armBlock = replaceAll(block, [
 			['|x64', '|ARM64'],
+			['>x64<', '>ARM64<'],
 			['>X64<', '>ARM64<'],
 			['MachineX64', 'MachineARM64'],
 			[String.raw`Dist\x64`, String.raw`Dist\ARM64`],
@@ -30,39 +43,41 @@ const cloneBlocks = (text, tagName) => {
 	});
 };
 
-const patchOpenExr = async () => {
-	const original = await readFile(openExrAttributePath, 'utf8');
-	const updated = original.replace(
-		'struct NameCompare: std::binary_function <const char *, const char *, bool>\n{',
-		'struct NameCompare\n{',
-	);
+const hasArm64ProjectConfiguration = (text, config) => {
+	const blockPattern = new RegExp(`<ProjectConfiguration Include="${config}\\|ARM64">`, 'u');
 
-	if (updated !== original) {
-		await writeFile(openExrAttributePath, updated);
-	}
+	return blockPattern.test(text);
+};
+
+const cloneProjectConfigurations = (text) => {
+	const blockPattern =
+		/(<ProjectConfiguration Include="(Debug|Release)\|x64">[\s\S]*?<\/ProjectConfiguration>)/gu;
+
+	return text.replace(blockPattern, (block, _match, config) => {
+		if (hasArm64ProjectConfiguration(text, config)) {
+			return block;
+		}
+
+		const armBlock = replaceAll(block, [
+			['|x64', '|ARM64'],
+			['>x64<', '>ARM64<'],
+		]);
+
+		return `${block}\n    ${armBlock}`;
+	});
 };
 
 const patchArm64Project = async (path) => {
 	const original = await readFile(path, 'utf8');
-	if (original.includes('Release|ARM64')) {
-		return;
-	}
-
-	let updated = original.replace(
-		'    <ProjectConfiguration Include="Debug|x64">\n      <Configuration>Debug</Configuration>\n      <Platform>x64</Platform>\n    </ProjectConfiguration>',
-		'    <ProjectConfiguration Include="Debug|x64">\n      <Configuration>Debug</Configuration>\n      <Platform>x64</Platform>\n    </ProjectConfiguration>\n    <ProjectConfiguration Include="Debug|ARM64">\n      <Configuration>Debug</Configuration>\n      <Platform>ARM64</Platform>\n    </ProjectConfiguration>',
-	);
-
-	updated = updated.replace(
-		'    <ProjectConfiguration Include="Release|x64">\n      <Configuration>Release</Configuration>\n      <Platform>x64</Platform>\n    </ProjectConfiguration>',
-		'    <ProjectConfiguration Include="Release|x64">\n      <Configuration>Release</Configuration>\n      <Platform>x64</Platform>\n    </ProjectConfiguration>\n    <ProjectConfiguration Include="Release|ARM64">\n      <Configuration>Release</Configuration>\n      <Platform>ARM64</Platform>\n    </ProjectConfiguration>',
-	);
+	let updated = cloneProjectConfigurations(original);
 
 	updated = cloneBlocks(updated, 'PropertyGroup');
 	updated = cloneBlocks(updated, 'ImportGroup');
 	updated = cloneBlocks(updated, 'ItemDefinitionGroup');
 
-	await writeFile(path, updated);
+	if (updated !== original) {
+		await writeFile(path, updated);
+	}
 };
 
 const patchArm64Projects = async (dir) => {
@@ -82,7 +97,7 @@ const patchArm64Projects = async (dir) => {
 
 const buildPlatform = process.argv[2] ?? '';
 
-await patchOpenExr();
+await patchFreeImageSources();
 
 if (buildPlatform.toUpperCase() === 'ARM64') {
 	await patchArm64Projects(projectRoot);
