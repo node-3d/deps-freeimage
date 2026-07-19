@@ -10,18 +10,7 @@ This is a part of [Node3D](https://github.com/node-3d) project.
 npm install @node-3d/deps-freeimage
 ```
 
-## Binary Origin
 
-Release archives are built by this repository's public GitHub Actions workflows.
-
-Attestations: https://github.com/node-3d/deps-freeimage/attestations
-
-To verify a downloaded archive:
-
-```bash
-gh release download <tag> -R node-3d/deps-freeimage -p <platform>.gz
-gh attestation verify <platform>.gz -R node-3d/deps-freeimage
-```
 
 This dependency package distributes **FreeImage 3.18**
 binaries and headers through **npm** for **Node.js** addons.
@@ -64,3 +53,16 @@ The rest of this package is MIT licensed.
 
 Windows, Linux, and macOS binaries are built with
 [GitHub Actions](https://github.com/node-3d/deps-freeimage/actions).
+
+## Binary Origin
+
+Release archives are built by this repository's public GitHub Actions workflows.
+
+Attestations: https://github.com/node-3d/deps-freeimage/attestations
+
+To verify a downloaded archive:
+
+```bash
+gh release download <tag> -R node-3d/deps-freeimage -p <platform>.gz
+gh attestation verify <platform>.gz -R node-3d/deps-freeimage
+```
