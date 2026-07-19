@@ -30,6 +30,15 @@ export const patchFreeImageSources = async () => {
 				'defined(THINK_C) || defined(__SC__)',
 			],
 		]),
+		patchFile(join(projectRoot, 'Source/ZLib/zutil.h'), [
+			['#if defined(MACOS) || defined(TARGET_OS_MAC)', '#if defined(MACOS)'],
+		]),
+		patchFile(join(projectRoot, 'Source/OpenEXR/IlmImf/ImfSimd.h'), [
+			[
+				'#if defined __SSE2__ || (_MSC_VER >= 1300 && !_M_CEE_PURE)',
+				'#if defined __SSE2__ || (defined(_MSC_VER) && _MSC_VER >= 1300 && !defined(_M_CEE_PURE) && (defined(_M_IX86) || defined(_M_X64) || defined(_M_AMD64)))',
+			],
+		]),
 	]);
 };
 
