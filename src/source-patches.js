@@ -7,7 +7,10 @@ const projectRoot = 'src/FreeImage';
 const patchFile = async (path, replacements) => {
 	const original = await readFile(path, 'utf8');
 	let updated = original;
-	for (const [from, to] of replacements) {
+	for (const [from, to, marker] of replacements) {
+		if (marker && updated.includes(marker)) {
+			continue;
+		}
 		if (updated.includes(from)) {
 			updated = updated.replace(from, to);
 		}
@@ -35,10 +38,18 @@ export const patchFreeImageSources = async () => {
 		patchFile(join(projectRoot, 'Source/ZLib/zutil.h'), [
 			['#if defined(MACOS) || defined(TARGET_OS_MAC)', '#if defined(MACOS)'],
 		]),
-		patchFile(join(projectRoot, 'Source/ZLib/gzlib.c'), [
+		patchFile(join(projectRoot, 'Source/ZLib/gzread.c'), [
 			[
 				'#include "gzguts.h"\n',
 				'#include "gzguts.h"\n\n#if defined(__APPLE__)\n#  include <unistd.h>\n#endif\n',
+				'#  include <unistd.h>',
+			],
+		]),
+		patchFile(join(projectRoot, 'Source/ZLib/gzwrite.c'), [
+			[
+				'#include "gzguts.h"\n',
+				'#include "gzguts.h"\n\n#if defined(__APPLE__)\n#  include <unistd.h>\n#endif\n',
+				'#  include <unistd.h>',
 			],
 		]),
 		patchFile(join(projectRoot, 'Source/OpenEXR/IlmImf/ImfSimd.h'), [
