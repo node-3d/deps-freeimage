@@ -37,6 +37,18 @@ const cloneBlocks = (text, tagName) => {
 			['>X64<', '>ARM64<'],
 			['MachineX64', 'MachineARM64'],
 			[String.raw`Dist\x64`, String.raw`Dist\ARM64`],
+			[
+				'<WarningLevel>Level3</WarningLevel>',
+				'<WarningLevel>TurnOffAllWarnings</WarningLevel>',
+			],
+			[
+				'<WarningLevel>Level4</WarningLevel>',
+				'<WarningLevel>TurnOffAllWarnings</WarningLevel>',
+			],
+			[
+				'<RandomizedBaseAddress>false</RandomizedBaseAddress>',
+				'<RandomizedBaseAddress>true</RandomizedBaseAddress>',
+			],
 		]);
 
 		return `${block}\n  ${armBlock}`;
