@@ -8,7 +8,7 @@ const patchFile = async (path, replacements) => {
 	const original = await readFile(path, 'utf8');
 	let updated = original;
 	for (const [from, to] of replacements) {
-		if (!updated.includes(to)) {
+		if (updated.includes(from)) {
 			updated = updated.replace(from, to);
 		}
 	}
