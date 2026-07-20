@@ -38,6 +38,13 @@ export const patchFreeImageSources = async () => {
 		patchFile(join(projectRoot, 'Source/ZLib/zutil.h'), [
 			['#if defined(MACOS) || defined(TARGET_OS_MAC)', '#if defined(MACOS)'],
 		]),
+		patchFile(join(projectRoot, 'Source/ZLib/gzlib.c'), [
+			[
+				'#include "gzguts.h"\n',
+				'#include "gzguts.h"\n\n#if defined(__APPLE__)\n#  include <unistd.h>\n#endif\n',
+				'#  include <unistd.h>',
+			],
+		]),
 		patchFile(join(projectRoot, 'Source/ZLib/gzread.c'), [
 			[
 				'#include "gzguts.h"\n',
