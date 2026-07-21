@@ -2,13 +2,24 @@
 setlocal
 
 if "%BUILD_PLATFORM%"=="" set BUILD_PLATFORM=x64
-if "%PLATFORM_TOOLSET%"=="" set PLATFORM_TOOLSET=v143
+set BUILD_DIR=src\FreeImage-build-%BUILD_PLATFORM%
 
-node src\windows-patches.js %BUILD_PLATFORM% || exit /b 1
+cmake -S src\FreeImage -B %BUILD_DIR% -A %BUILD_PLATFORM% ^
+	-DCMAKE_CONFIGURATION_TYPES=Release ^
+	-DFREEIMAGE_COLORORDER=BGR ^
+	-DFREEIMAGE_WITH_LIBHEIF=OFF ^
+	-DFREEIMAGE_WITH_LIBJPEGXL=OFF ^
+	-DFREEIMAGE_WITH_PYTHON_BINDINGS=OFF ^
+	-DFREEIMAGE_BUILD_TESTS=OFF || exit /b 1
 
-msbuild /p:Platform=%BUILD_PLATFORM% /p:Configuration=Release /p:PlatformToolset=%PLATFORM_TOOLSET% src\FreeImage\FreeImage.2013.vcxproj || exit /b 1
+cmake --build %BUILD_DIR% --config Release --target FreeImage --parallel || exit /b 1
 
 if not exist src\build mkdir src\build
 
-copy /y src\FreeImage\Dist\%BUILD_PLATFORM%\FreeImage.dll src\build\FreeImage.dll || exit /b 1
-copy /y src\FreeImage\Dist\%BUILD_PLATFORM%\FreeImage.lib src\build\FreeImage.lib || exit /b 1
+if exist %BUILD_DIR%\bin\Release\FreeImage.dll copy /y %BUILD_DIR%\bin\Release\FreeImage.dll src\build\FreeImage.dll
+if exist %BUILD_DIR%\bin\FreeImage.dll copy /y %BUILD_DIR%\bin\FreeImage.dll src\build\FreeImage.dll
+if exist %BUILD_DIR%\bin\Release\FreeImage.lib copy /y %BUILD_DIR%\bin\Release\FreeImage.lib src\build\FreeImage.lib
+if exist %BUILD_DIR%\bin\FreeImage.lib copy /y %BUILD_DIR%\bin\FreeImage.lib src\build\FreeImage.lib
+
+if not exist src\build\FreeImage.dll exit /b 1
+if not exist src\build\FreeImage.lib exit /b 1

@@ -12,11 +12,11 @@ npm install @node-3d/deps-freeimage
 
 
 
-This dependency package distributes **FreeImage 3.18**
+This dependency package distributes **FreeImageRe 4.2.0**
 binaries and headers through **npm** for **Node.js** addons.
 
 * Platforms: Windows x64/ARM64, Linux x64/ARM64, macOS x64/ARM64.
-* Library: FreeImage.
+* Library: FreeImageRe, binary-compatible with FreeImage 3.18.
 
 
 ### JS Interface
@@ -37,14 +37,18 @@ See the [@node-3d/image native source](https://github.com/node-3d/image/blob/mas
 #include <FreeImage.h>
 ```
 
-Refer to [FreeImage 3.18 docs](http://downloads.sourceforge.net/freeimage/FreeImage3180.pdf).
+Refer to [FreeImageRe](https://github.com/agruzdev/FreeImageRe) and the
+[FreeImage 3.18 docs](http://downloads.sourceforge.net/freeimage/FreeImage3180.pdf).
 
 
 ## Legal notice
 
-This software uses the [FreeImage open source image library](http://freeimage.sourceforge.net).
-FreeImage is legally used under the FIPL (FreeImage Public License) version.
-It is explicitly stated that FreeImage can be used commercially under FIPL.
+This software uses [FreeImageRe](https://github.com/agruzdev/FreeImageRe),
+a maintained fork of the
+[FreeImage open source image library](http://freeimage.sourceforge.net).
+FreeImageRe keeps the original FreeImage dual-license model. FreeImage is
+legally used under the FIPL (FreeImage Public License) version. It is
+explicitly stated that FreeImage can be used commercially under FIPL.
 
 FreeImage licensing information (a copy) is given in a [separate file](FREEIMAGE_FIPL),
 which also can be found on
