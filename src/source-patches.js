@@ -59,6 +59,18 @@ export const patchFreeImageSources = async () => {
 				'#  include <unistd.h>',
 			],
 		]),
+		patchFile(join(projectRoot, 'Source/LibJXR/image/decode/segdec.c'), [
+			[
+				'#include "decode.h"\n',
+				'#include "decode.h"\n\n#if !defined(_MSC_VER) && (defined(__clang__) || defined(__GNUC__))\n#  define _byteswap_ulong __builtin_bswap32\n#endif\n',
+				'#  define _byteswap_ulong __builtin_bswap32',
+			],
+			[
+				'#include "decode.h"\r\n',
+				'#include "decode.h"\r\n\r\n#if !defined(_MSC_VER) && (defined(__clang__) || defined(__GNUC__))\r\n#  define _byteswap_ulong __builtin_bswap32\r\n#endif\r\n',
+				'#  define _byteswap_ulong __builtin_bswap32',
+			],
+		]),
 		patchFile(join(projectRoot, 'Source/OpenEXR/IlmImf/ImfSimd.h'), [
 			[
 				'#if defined __SSE2__ || (_MSC_VER >= 1300 && !_M_CEE_PURE)',
