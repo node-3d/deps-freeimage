@@ -20,9 +20,6 @@ fi
 		-DFREEIMAGE_BUILD_TESTS=OFF \
 		$osx_args
 
-	cmake --build "$build_dir" --config Release --target YATO --parallel
-	node source-patches.js
-
 	cmake --build "$build_dir" --config Release --target FreeImage --parallel
 
 	if [ "$(uname -s)" = "Darwin" ]; then

@@ -4,8 +4,6 @@ setlocal
 if "%BUILD_PLATFORM%"=="" set BUILD_PLATFORM=x64
 set BUILD_DIR=src\FreeImage-build-%BUILD_PLATFORM%
 
-node src\source-patches.js || exit /b 1
-
 cmake -S src\FreeImage -B %BUILD_DIR% -A %BUILD_PLATFORM% ^
 	-DCMAKE_CONFIGURATION_TYPES=Release ^
 	-DFREEIMAGE_COLORORDER=BGR ^
@@ -14,8 +12,15 @@ cmake -S src\FreeImage -B %BUILD_DIR% -A %BUILD_PLATFORM% ^
 	-DFREEIMAGE_WITH_PYTHON_BINDINGS=OFF ^
 	-DFREEIMAGE_BUILD_TESTS=OFF || exit /b 1
 
-cmake --build %BUILD_DIR% --config Release --target YATO --parallel || exit /b 1
-node src\source-patches.js || exit /b 1
+if /I "%BUILD_PLATFORM%"=="ARM64" (
+	cmake --build %BUILD_DIR% --config Release --target YATO --parallel || exit /b 1
+	node src\source-patches.js --yato || exit /b 1
+)
+
+if /I "%BUILD_PLATFORM%"=="ARM64EC" (
+	cmake --build %BUILD_DIR% --config Release --target YATO --parallel || exit /b 1
+	node src\source-patches.js --yato || exit /b 1
+)
 
 cmake --build %BUILD_DIR% --config Release --target FreeImage --parallel || exit /b 1
 

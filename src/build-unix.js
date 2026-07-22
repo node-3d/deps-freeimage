@@ -19,7 +19,7 @@ const fail = (error) => {
 
 try {
 	console.log('FreeImage Build Started');
-	await exec('node src/source-patches.js');
+	await exec('node src/source-patches.js --format');
 	const { stderr } = await exec(`sh src/${platform}.sh`);
 	if (stderr) {
 		console.error(stderr);

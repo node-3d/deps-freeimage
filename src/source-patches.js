@@ -3,6 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('FreeImage/', import.meta.url));
+const patchArgs = new Set(process.argv.slice(2));
+const patchFormat = patchArgs.size === 0 || patchArgs.has('--format');
+const patchYato = patchArgs.size === 0 || patchArgs.has('--yato');
 
 const replace = async (relativePath, before, after, required = true) => {
 	const filePath = path.join(root, relativePath);
@@ -17,6 +20,8 @@ const replace = async (relativePath, before, after, required = true) => {
 		return;
 	}
 
+	source = source.replaceAll('\r\n', '\n');
+
 	if (after && source.includes(after)) {
 		return;
 	}
@@ -28,33 +33,37 @@ const replace = async (relativePath, before, after, required = true) => {
 	await fs.writeFile(filePath, source.replace(before, after));
 };
 
-await replace(
-	'Source/FreeImage/Plugin.cpp',
-	'#include <format>\n\n#include <filesystem>',
-	'#include <filesystem>\n#include <sstream>',
-);
+if (patchFormat) {
+	await replace(
+		'Source/FreeImage/Plugin.cpp',
+		'#include <format>\n\n#include <filesystem>',
+		'#include <filesystem>\n#include <sstream>',
+	);
 
-await replace(
-	'Source/FreeImage/Plugin.cpp',
-	'\t\treturn std::format(".fitmp{:x}", static_cast<uint32_t>(std::rand()));',
-	[
-		'\t\tstd::ostringstream suffix;',
-		'\t\tsuffix << ".fitmp" << std::hex << static_cast<uint32_t>(std::rand());',
-		'\t\treturn suffix.str();',
-	].join('\n'),
-);
+	await replace(
+		'Source/FreeImage/Plugin.cpp',
+		'\t\treturn std::format(".fitmp{:x}", static_cast<uint32_t>(std::rand()));',
+		[
+			'\t\tstd::ostringstream suffix;',
+			'\t\tsuffix << ".fitmp" << std::hex << static_cast<uint32_t>(std::rand());',
+			'\t\treturn suffix.str();',
+		].join('\n'),
+	);
 
-await replace('Source/Metadata/FIRational.cpp', '#include <format>\n', '#include <string>\n');
+	await replace('Source/Metadata/FIRational.cpp', '#include <format>\n', '#include <string>\n');
 
-await replace(
-	'Source/Metadata/FIRational.cpp',
-	'        s = std::format("{}/{}", _numerator, _denominator);',
-	'\t\ts = std::to_string(_numerator) + "/" + std::to_string(_denominator);',
-);
+	await replace(
+		'Source/Metadata/FIRational.cpp',
+		'        s = std::format("{}/{}", _numerator, _denominator);',
+		'\t\ts = std::to_string(_numerator) + "/" + std::to_string(_denominator);',
+	);
+}
 
-await replace(
-	'dependencies/yato/source/include/yato/prerequisites.h',
-	'#if defined(__x86_64__) || defined(_M_X64) || defined(__aarch64__)',
-	'#if defined(__x86_64__) || defined(_M_X64) || defined(__aarch64__) || defined(_M_ARM64) || defined(_M_ARM64EC)',
-	false,
-);
+if (patchYato) {
+	await replace(
+		'dependencies/yato/source/include/yato/prerequisites.h',
+		'#if defined(__x86_64__) || defined(_M_X64) || defined(__aarch64__)',
+		'#if defined(__x86_64__) || defined(_M_X64) || defined(__aarch64__) || defined(_M_ARM64) || defined(_M_ARM64EC)',
+		false,
+	);
+}
