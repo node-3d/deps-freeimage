@@ -2,7 +2,7 @@
 
 This is a part of [Node3D](https://github.com/node-3d) project.
 
-[![NPM](https://badge.fury.io/js/@node-3d%2Fdeps-freeimage.svg)](https://badge.fury.io/js/@node-3d/deps-freeimage)
+[![NPM](https://badge.fury.io/js/@node-3d%2Fdeps-freeimage.svg)](https://badge.fury.io/js/@node-3d%2Fdeps-freeimage)
 [![Lint](https://github.com/node-3d/deps-freeimage/actions/workflows/lint.yml/badge.svg)](https://github.com/node-3d/deps-freeimage/actions/workflows/lint.yml)
 [![Test](https://github.com/node-3d/deps-freeimage/actions/workflows/test.yml/badge.svg)](https://github.com/node-3d/deps-freeimage/actions/workflows/test.yml)
 
@@ -10,24 +10,19 @@ This is a part of [Node3D](https://github.com/node-3d) project.
 npm install @node-3d/deps-freeimage
 ```
 
-
-
 This dependency package distributes **FreeImageRe 4.2.0**
 binaries and headers through **npm** for **Node.js** addons.
 
-* Platforms: Windows x64/ARM64, Linux x64/ARM64, macOS x64/ARM64.
-* Library: FreeImageRe, binary-compatible with FreeImage 3.18.
-
+- Platforms: Windows x64/ARM64, Linux x64/ARM64, macOS x64/ARM64.
+- Library: FreeImageRe, binary-compatible with FreeImage 3.18.
 
 ### JS Interface
 
 See the [@node-3d/image public entrypoint](https://github.com/node-3d/image/blob/master/ts/index.ts).
 
-
 ### binding.gyp
 
 See the [@node-3d/image binding.gyp](https://github.com/node-3d/image/tree/master/src/binding.gyp).
-
 
 ### addon.cpp
 
@@ -39,7 +34,6 @@ See the [@node-3d/image native source](https://github.com/node-3d/image/blob/mas
 
 Refer to [FreeImageRe](https://github.com/agruzdev/FreeImageRe) and the
 [FreeImage 3.18 docs](http://downloads.sourceforge.net/freeimage/FreeImage3180.pdf).
-
 
 ## Legal notice
 
