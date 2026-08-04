@@ -16,6 +16,17 @@ binaries and headers through **npm** for **Node.js** addons.
 - Platforms: Windows x64/ARM64, Linux x64/ARM64, macOS x64/ARM64.
 - Library: FreeImageRe, binary-compatible with FreeImage 3.18.
 
+## Source And Build Notes
+
+This package builds from the maintained
+[FreeImageRe](https://github.com/agruzdev/FreeImageRe) source instead of
+carrying stale vendor archives. Windows ARM64 and modern macOS builds require
+source and build patches for older third-party assumptions; those patches should
+stay scripted and repeatable rather than being applied as opaque archive edits.
+
+Vendored source patches are acceptable when license notices are preserved and
+the carried third-party code remains documented.
+
 ### JS Interface
 
 See the [@node-3d/image public entrypoint](https://github.com/node-3d/image/blob/master/ts/index.ts).
