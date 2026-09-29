@@ -99,7 +99,7 @@ jobs:
 
       - name: Build Unix Binaries
         if: ${{ !startsWith(matrix.target, 'windows-') }}
-        run: node src/build-unix
+        run: node src/build-unix.ts
 
       - name: Build Windows Binaries
         if: startsWith(matrix.target, 'windows-')
@@ -109,7 +109,7 @@ jobs:
           BUILD_PLATFORM: ${{ matrix.build_platform }}
 
       - name: Stage Built Binaries
-        run: node src/build-post
+        run: node src/build-post.ts
 
       - name: Run Unit Tests
         run: npm run test:ci

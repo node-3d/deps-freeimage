@@ -105,7 +105,7 @@ jobs:
 
       - name: Build Unix
         if: ${{ !startsWith(matrix.target, 'windows-') }}
-        run: node src/build-unix
+        run: node src/build-unix.ts
 
       - name: Build Windows
         if: startsWith(matrix.target, 'windows-')
@@ -115,7 +115,7 @@ jobs:
           BUILD_PLATFORM: ${{ matrix.build_platform }}
 
       - name: Build Post Step
-        run: node src/build-post
+        run: node src/build-post.ts
 
       - name: Store Native Candidate
         uses: node-3d/addon-tools/actions/native-candidate-upload@1073c0a6403f6c20df2135f03950a568e865aa16

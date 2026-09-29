@@ -14,12 +14,12 @@ cmake -S src\FreeImage -B %BUILD_DIR% -A %BUILD_PLATFORM% ^
 
 if /I "%BUILD_PLATFORM%"=="ARM64" (
 	cmake --build %BUILD_DIR% --config Release --target YATO --parallel || exit /b 1
-	node src\source-patches.js --yato || exit /b 1
+	node src\source-patches.ts --yato || exit /b 1
 )
 
 if /I "%BUILD_PLATFORM%"=="ARM64EC" (
 	cmake --build %BUILD_DIR% --config Release --target YATO --parallel || exit /b 1
-	node src\source-patches.js --yato || exit /b 1
+	node src\source-patches.ts --yato || exit /b 1
 )
 
 cmake --build %BUILD_DIR% --config Release --target FreeImage --parallel || exit /b 1

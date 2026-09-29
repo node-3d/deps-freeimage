@@ -8,3 +8,5 @@
 	mkdir -p build
 	git clone --depth 1 -b v4.2.0 https://github.com/agruzdev/FreeImageRe.git FreeImage
 )
+
+node src/source-patches.ts --webp

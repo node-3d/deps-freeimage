@@ -1,20 +1,14 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-
-const {
-	getBin, ensuredir,
-} = await import('@node-3d/addon-tools');
-
+import { ensuredir, getBin } from '@node-3d/addon-tools';
 
 const bin = getBin();
 const binPath = path.resolve(bin);
 
-
-const fail = (error) => {
+const fail = (error: unknown): never => {
 	console.error(error);
 	process.exit(-1);
 };
-
 
 try {
 	await ensuredir(binPath);

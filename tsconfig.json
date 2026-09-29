@@ -1,4 +1,4 @@
 {
 	"extends": "@node-3d/addon-tools/tsconfig.base.json",
-	"include": ["*.ts"]
+	"include": ["*.ts", "src/**/*.ts"]
 }
