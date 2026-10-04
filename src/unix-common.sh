@@ -4,6 +4,7 @@ build_dir="FreeImage-build-$target"
 osx_args=""
 
 if [ -n "$osx_arch" ]; then
+	export MACOSX_DEPLOYMENT_TARGET=13.5
 	osx_args="-DCMAKE_OSX_ARCHITECTURES=$osx_arch -DCMAKE_OSX_DEPLOYMENT_TARGET=13.5"
 fi
 

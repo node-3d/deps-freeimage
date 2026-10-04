@@ -40,6 +40,23 @@ const replace = async (
 };
 
 if (patchFormat) {
+	if (process.platform === 'darwin') {
+		// ExternalProject configures each dependency separately; pass the parent's macOS target.
+		await replace(
+			'cmake/external_project_common.cmake',
+			'if (IS_MULTI_CONFIG)',
+			[
+				'if (APPLE)',
+				'    list(APPEND CMAKE_TOOLCHAIN_FILE_ARG',
+				'        "-DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}"',
+				'        "-DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}")',
+				'endif()',
+				'',
+				'if (IS_MULTI_CONFIG)',
+			].join('\n'),
+		);
+	}
+
 	await replace(
 		'Source/FreeImage/Plugin.cpp',
 		'#include <format>\n\n#include <filesystem>',
